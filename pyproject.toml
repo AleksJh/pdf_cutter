@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "pdf-cutting"
+version = "0.1.0"
+description = "A simple yet powerful application for extracting specific pages from PDF files"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+PyPDF2 = "^3.0.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.0.0"
+flake8 = "^6.0.0"
+isort = "^5.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+
+# isort configuration (compatible with Black)
+[tool.isort]
+profile = "black"
+line_length = 88
+
+# Flake8 configuration is in .flake8 file since it doesn't support pyproject.toml yet
