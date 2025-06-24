@@ -264,6 +264,15 @@ class PDFCutterApp:
 
 def main():
     root = tk.Tk()
+    
+    # Set icon for the main window
+    try:
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "file_types_pdf_21313.ico")
+        if os.path.exists(icon_path):
+            root.iconbitmap(icon_path)
+    except Exception:
+        pass  # Ignore icon errors
+        
     PDFCutterApp(root)
     root.mainloop()
 

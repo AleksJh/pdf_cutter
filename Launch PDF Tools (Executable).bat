@@ -1,0 +1,3 @@
+@echo off
+echo Starting PDF Tools...
+start "" "%~dp0dist\pdf_tools.exe"

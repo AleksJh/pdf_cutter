@@ -113,7 +113,16 @@ class PDFToolsLauncher:
 
     def launch_gui(self):
         try:
-            subprocess.Popen(["poetry", "run", "python", "pdf_cutter_gui.py"])
+            # Use CREATE_NO_WINDOW flag to hide console window
+            startupinfo = None
+            if os.name == 'nt':
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = 0  # SW_HIDE
+            
+            subprocess.Popen([sys.executable, "pdf_cutter_gui.py"], 
+                            startupinfo=startupinfo, 
+                            creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
         except Exception as e:
             messagebox.showerror("Error", f"Failed to launch PDF Cutter: {str(e)}")
 
@@ -140,23 +149,16 @@ class PDFToolsLauncher:
 
 
 def main():
-    # Check if dependencies are installed
-    try:
-        # Try to import a required dependency and use it to avoid unused import warning
-        import PyPDF2
-        _ = PyPDF2.__version__  # Use PyPDF2 to avoid unused import warning
-    except ImportError:
-        print("Dependencies are not installed. Please install using Poetry...")
-        try:
-            subprocess.check_call(["poetry", "install"])
-            print("Dependencies installed successfully.")
-        except Exception as e:
-            print(f"Failed to install dependencies: {str(e)}")
-            print("Please install them manually using: poetry install")
-            sys.exit(1)
-
     # Launch the GUI
     root = tk.Tk()
+    # Set icon for the main window
+    try:
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "file_types_pdf_21313.ico")
+        if os.path.exists(icon_path):
+            root.iconbitmap(icon_path)
+    except Exception:
+        pass  # Ignore icon errors
+        
     PDFToolsLauncher(root)
     root.mainloop()
 
